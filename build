@@ -1,4 +1,4 @@
 #!/bin/bash
 
 
-asc docbuilder.ts -o docbuilder.wasm --bindings esm
+asc main.ts -o main.wasm --bindings esm --debug

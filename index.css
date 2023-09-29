@@ -30,3 +30,8 @@
     left: 2%;
     top: 97%;
 }
+#openButton {
+    position: absolute;
+    left: 10%;
+    top: 97%;
+}

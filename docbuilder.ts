@@ -5,14 +5,16 @@ import {Sxpr, SxprType} from "./sxpr.ts";
 import {Option, Result, Ok, Err, Some, None} from "./common.ts";
 
 
-enum ItemType {
+export enum ItemType {
     Container,
     Text,
     Vertical,
     Horizontal,
     Centered,
+    Raw,
 }
-enum CSSNumberType {
+
+export enum CSSNumberType {
     Raw,
     Percent,
     Em,
@@ -22,7 +24,7 @@ enum CSSNumberType {
 }
 
 
-class StyleOptions {
+export class StyleOptions {
     width: Option<CSSNumber>;
     height: Option<CSSNumber>;
     padding: Option<CSSNumber>;
@@ -136,7 +138,7 @@ class StyleOptions {
     }
 }
 
-class CSSNumber {
+export class CSSNumber {
     type: CSSNumberType;
     value: u32;
 
@@ -195,7 +197,7 @@ class CSSNumber {
     }
 }
 
-class DocbuilderItem {
+export class DocbuilderItem {
     type: ItemType;
     textValue: String;
     inner: Array<DocbuilderItem>;
@@ -203,7 +205,7 @@ class DocbuilderItem {
 
 
     constructor(sxpr: Sxpr) {
-        this.type = ItemType.Container;
+        this.type = ItemType.Raw;
         this.textValue = "";
         this.inner = new Array();
         this.options = new StyleOptions();
@@ -284,14 +286,4 @@ class DocbuilderItem {
                 return "";
         }
     }
-}
-
-
-export function parseDocbuilder(source: String): String {
-    let sxpr = new Sxpr();
-    let res = sxpr.parse(source);
-    res.debugErr();
-    console.log(sxpr.toString());
-    let docbuilder = new DocbuilderItem(sxpr);
-    return docbuilder.toHTML();
 }

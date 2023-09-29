@@ -23,9 +23,24 @@ async function instantiate(module, imports = {}) {
   const memory = exports.memory || imports.env.memory;
   const adaptedExports = Object.setPrototypeOf({
     parseDocbuilder(source) {
-      // docbuilder/parseDocbuilder(~lib/string/String) => ~lib/string/String
+      // main/parseDocbuilder(~lib/string/String) => ~lib/string/String
       source = __lowerString(source) || __notnull();
       return __liftString(exports.parseDocbuilder(source) >>> 0);
+    },
+    testEncoding(s) {
+      // main/testEncoding(~lib/string/String) => ~lib/string/String
+      s = __lowerString(s) || __notnull();
+      return __liftString(exports.testEncoding(s) >>> 0);
+    },
+    encodeString(s) {
+      // main/encodeString(~lib/string/String) => ~lib/string/String
+      s = __lowerString(s) || __notnull();
+      return __liftString(exports.encodeString(s) >>> 0);
+    },
+    decodeString(s) {
+      // main/decodeString(~lib/string/String) => ~lib/string/String
+      s = __lowerString(s) || __notnull();
+      return __liftString(exports.decodeString(s) >>> 0);
     },
   }, exports);
   function __liftString(pointer) {
@@ -56,10 +71,13 @@ async function instantiate(module, imports = {}) {
 export const {
   memory,
   parseDocbuilder,
+  testEncoding,
+  encodeString,
+  decodeString,
 } = await (async url => instantiate(
   await (async () => {
     try { return await globalThis.WebAssembly.compileStreaming(globalThis.fetch(url)); }
     catch { return globalThis.WebAssembly.compile(await (await import("node:fs/promises")).readFile(url)); }
   })(), {
   }
-))(new URL("docbuilder.wasm", import.meta.url));
+))(new URL("main.wasm", import.meta.url));
