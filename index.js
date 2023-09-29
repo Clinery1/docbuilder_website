@@ -9,9 +9,23 @@ const RENDER = document.getElementById("render");
 const baseSource = RENDER.src;
 
 
+var extraWindows = [];
+
+
 function parseDocbuilder() {
     let val = Docbuilder.encodeString(SOURCE.value);
     RENDER.src = baseSource + "#" + val;
+    for (let i = 0; i < extraWindows.length; i += 1) {
+        extraWindows[i].location.hash = val;
+    }
+    let newWindows = extraWindows.filter(function(w){
+        console.log(w.closed);
+        return !w.closed
+    });
+    let delta = extraWindows.length - newWindows.length;
+    if (delta > 0) {
+        console.log("Removed " + delta.toString() + " closed window(s)");
+    }
 }
 
 
@@ -22,5 +36,5 @@ document
 document
     .getElementById("openButton")
     .addEventListener("click", function() {
-        window.open(RENDER.src, "_blank");
+        extraWindows.push(window.open(RENDER.src, "_blank"));
     });

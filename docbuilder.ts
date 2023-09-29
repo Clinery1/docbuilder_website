@@ -283,6 +283,13 @@ export class DocbuilderItem {
                 }
                 return s.concat("</div>");
             default:
+                let s = "<div style =\""
+                    .concat(this.options.toString())
+                    .concat("\">");
+                for (let i = 0; i < this.inner.length; i += 1) {
+                    s = s.concat(this.inner[i].toHTML());
+                }
+                return s.concat("</div>");
                 return "";
         }
     }
